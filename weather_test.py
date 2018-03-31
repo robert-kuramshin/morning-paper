@@ -21,9 +21,10 @@ def image_lookup(cond_code):
             return condition_files[i]
 
 print_file = open("pf.txt","w")
+print_file.write(condition.text()+" "+condition.temp()+"C")
 print_file.write("Good Morning!\n")
-print_file.write("It is "+datetime.datetime.now().strftime("%H:%M %m/%d/%y")+"\n")
-print_file.write(condition.text()+"\n"+condition.temp()+"C")
+print_file.write(datetime.datetime.now().strftime("%H:%M %m/%d/%y")+"\n")
+
 print_file.close()
 
 os.system('lpr -o fit-to-page '+image_lookup(condition.code()))
