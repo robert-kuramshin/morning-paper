@@ -21,7 +21,7 @@ def image_lookup(cond_code):
             return condition_files[i]
 
 print_file = open("pf.txt","w")
-print_file.write(condition.text()+" "+condition.temp()+"C")
+print_file.write(condition.text()+" "+condition.temp()+"C\n")
 print_file.write("Good Morning!\n")
 print_file.write(datetime.datetime.now().strftime("%H:%M %m/%d/%y")+"\n")
 
