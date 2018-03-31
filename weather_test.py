@@ -27,6 +27,6 @@ print_file.write(datetime.datetime.now().strftime("%H:%M %m/%d/%y")+"\n")
 
 print_file.close()
 
-os.system('lpr -o fit-to-page '+image_lookup(condition.code()))
+os.system('lpr -o scaling=50 '+image_lookup(condition.code()))
 os.system('lpr pf.txt')
 
