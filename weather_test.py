@@ -26,13 +26,15 @@ articles = api.get_top_headlines(sources='bbc-news')["articles"]
 printable = []
 temp = min(len(articles),5)
 for i in range(temp):
-    printable.append(articles[i]["description"]+"\n")
+    printable.append(articles[i]["title"]+"\n")
 
 print_file = open("pf.txt","w")
 print_file.write(condition.text()+" "+condition.temp()+"C\n")
 print_file.write("Good Morning!\n")
 print_file.write(datetime.datetime.now().strftime("%H:%M %m/%d/%y")+"\n")
+print_file.write("\nHere is your new for today!\n")
 for line in printable:
+    print_file.write("-----------------\n")
     print_file.write(line)
 print_file.close()
 
