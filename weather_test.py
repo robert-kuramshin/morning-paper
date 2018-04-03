@@ -48,10 +48,12 @@ def print_paper():
 hour = datetime.datetime.now().hour
 minute = datetime.datetime.now().minute
 hour_alarm = 1
-minute_alarm = 42
+minute_alarm = 45
 
 while((not hour_alarm==hour) or (not minute_alarm==minute)):
     t_minutes = hour_alarm*60+minute_alarm-hour*60-minute
     print(t_minutes," Minutes Until Alarm")
     time.sleep(5)
+    hour = datetime.datetime.now().hour
+    minute = datetime.datetime.now().minute
 print_paper()
