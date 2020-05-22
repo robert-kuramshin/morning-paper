@@ -37,18 +37,23 @@ def print_paper():
     print_file.write("\nHere is your news for today!\n")
     for line in printable:
         print_file.write("-----------------\n")
-        print_file.write(line)
+        linemod = ""
+        while(len(line)>18):
+            linemod = linemod+line[:18]+"\n"
+            line = line[18:]
+        linemod+=line
+        print_file.write(linemod)
     print_file.close()
 
-    os.system('lpr -o scaling=50 '+image_lookup(condition.code()))
+    #os.system('lpr -o scaling=50 '+image_lookup(condition.code()))
     os.system('lpr pf.txt')
 
 
 
 hour = datetime.datetime.now().hour
 minute = datetime.datetime.now().minute
-hour_alarm = 1
-minute_alarm = 45
+hour_alarm = 9
+minute_alarm = 0
 
 while((not hour_alarm==hour) or (not minute_alarm==minute)):
     t_minutes = hour_alarm*60+minute_alarm-hour*60-minute
@@ -56,4 +61,5 @@ while((not hour_alarm==hour) or (not minute_alarm==minute)):
     time.sleep(5)
     hour = datetime.datetime.now().hour
     minute = datetime.datetime.now().minute
+
 print_paper()
