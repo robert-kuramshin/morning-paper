@@ -9,6 +9,8 @@ import (
 var line_len int = 28
 var line_brk string = "----------------------------\n"
 
+var feed_urls = []string{"http://feeds.feedburner.com/ElectrekPodcast","https://hackaday.com/blog/feed","http://feeds.bbci.co.uk/news/world/rss.xml"}
+
 func min(a,b int) int {
 	if a < b {
 		return a
@@ -51,7 +53,7 @@ func parse_feed(url string, item_limit int) string {
 }
 
 func main() {
-	fmt.Println(parse_feed("http://feeds.bbci.co.uk/news/world/rss.xml",3))
-	fmt.Println(parse_feed("https://hackaday.com/blog/feed",3))
-//"https://w1.weather.gov/xml/current_obs/KATL.rss")//
+	for _,url := range feed_urls {
+		fmt.Println(parse_feed(url,3))
+	}
 }
