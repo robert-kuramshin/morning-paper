@@ -26,7 +26,9 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Recieved a GET request\n"))
 
 		if correctPass {
-			fmt.Println("Success")
+			for _, url := range feed_urls {
+				fmt.Print(parse_feed(url, 3))
+			}
 		}
 	// case "POST":
 	// 	reqBody, err := ioutil.ReadAll(r.Body)

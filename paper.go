@@ -1,17 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"strings"
+
 	"github.com/mmcdole/gofeed"
 )
 
 var line_len int = 28
 var line_brk string = "----------------------------\n"
 
-var feed_urls = []string{"http://feeds.feedburner.com/ElectrekPodcast","https://hackaday.com/blog/feed","http://feeds.bbci.co.uk/news/world/rss.xml"}
+var feed_urls = []string{"http://feeds.feedburner.com/ElectrekPodcast", "https://hackaday.com/blog/feed", "http://feeds.bbci.co.uk/news/world/rss.xml"}
 
-func min(a,b int) int {
+func min(a, b int) int {
 	if a < b {
 		return a
 	}
@@ -24,36 +24,39 @@ func parse_feed(url string, item_limit int) string {
 	fp := gofeed.NewParser()
 	feed, _ := fp.ParseURL(url)
 
+	if feed == nil {
+		return ""
+	}
+
 	res += feed.Title + "\n"
 	res += line_brk
 
-	n_items := min(len(feed.Items),item_limit)
+	n_items := min(len(feed.Items), item_limit)
 
-	for indx,item := range feed.Items[:n_items] {
+	for _, item := range feed.Items[:n_items] {
 		//fmt.Println(item.Title)
 		line := ""
+		flushed := true
 		words := strings.Fields(item.Title)
-		for _,word := range words {
-			if len(line) + len(word) + 1 > line_len {
+		for _, word := range words {
+			if len(line)+len(word)+1 > line_len {
 				res += line + "\n"
 				line = word
+				flushed = true
 			} else {
-				if(len(line) != 0) {
+				if len(line) != 0 {
 					line += " "
 				}
 				line += word
+				flushed = false
 			}
 		}
-		if(indx < n_items - 1) {
-			res += "\n"
+		if !flushed && line != "" {
+			res += line + "\n"
 		}
-	}
-	
-	return res
-}
 
-func main() {
-	for _,url := range feed_urls {
-		fmt.Println(parse_feed(url,3))
+		res += "\n"
 	}
+
+	return res
 }
