@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"io"
 	"net/http"
+	"os/exec"
 )
 
 var apiPath string = "/RPI/printer"
@@ -26,18 +27,23 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Recieved a GET request\n"))
 
 		if correctPass {
+			res := ""
 			for _, url := range feed_urls {
-				fmt.Print(parse_feed(url, 3))
+				res += parse_feed(url, 3)
 			}
-		}
-	// case "POST":
-	// 	reqBody, err := ioutil.ReadAll(r.Body)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
+			c1 := exec.Command("echo", "-e", res)
+			c2 := exec.Command("lpr")
 
-	// 	fmt.Printf("%s\n", reqBody)
-	// 	w.Write([]byte("Recieved a POST request\n"))
+			rP, wP := io.Pipe()
+			c1.Stdout = wP
+			c2.Stdin = rP
+
+			c1.Start()
+			c2.Start()
+			c1.Wait()
+			wP.Close()
+			c2.Wait()
+		}
 	default:
 		w.WriteHeader(http.StatusNotImplemented)
 		w.Write([]byte(http.StatusText(http.StatusNotImplemented)))
