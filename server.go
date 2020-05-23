@@ -7,7 +7,7 @@ import (
 )
 
 var apiPath string = "/RPI/printer"
-var apiPass string = "secret"
+var apiPass string = "pass"
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != apiPath {
