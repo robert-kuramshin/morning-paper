@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 )
 
 var apiPath string = "/RPI/printer"
+var apiPass string = "secret"
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != apiPath {
@@ -17,18 +16,26 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
+		correctPass := false
+
 		for k, v := range r.URL.Query() {
-			fmt.Printf("%s: %s\n", k, v)
+			if k == "password" && v[0] == apiPass {
+				correctPass = true
+			}
 		}
 		w.Write([]byte("Recieved a GET request\n"))
-	case "POST":
-		reqBody, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
 
-		fmt.Printf("%s\n", reqBody)
-		w.Write([]byte("Recieved a POST request\n"))
+		if correctPass {
+			fmt.Println("Success")
+		}
+	// case "POST":
+	// 	reqBody, err := ioutil.ReadAll(r.Body)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+
+	// 	fmt.Printf("%s\n", reqBody)
+	// 	w.Write([]byte("Recieved a POST request\n"))
 	default:
 		w.WriteHeader(http.StatusNotImplemented)
 		w.Write([]byte(http.StatusText(http.StatusNotImplemented)))
